@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 import csv
 import myModules.ynInput
 from myModules.openFile import openCSV
+import myModules.searchExamples
 
 l = [['', '']]
 l, file = openCSV()
@@ -49,11 +50,16 @@ while True:
     print(word_mean)
     # ------------------------------------------------------
 
+    # 例文を取得 -------------------------------------------
+    ex = myModules.searchExamples.search(word)
+    examples = sum(ex, [])
+
     # リストファイルに追加するかどうか選択 -----------------
     append_or_not = myModules.ynInput.ynCall("Do you want to append?")
 
     if append_or_not == "y":
         data = [word, word_mean]
+        data.extend(examples)
         with open(file, 'a', encoding="utf-8-sig") as f:
             writer = csv.writer(f, lineterminator='\n')
             writer.writerow(data)
@@ -61,6 +67,8 @@ while True:
         l.append(data)
     # ------------------------------------------------------
 
+    
+    
 '''
 今後の改善点
 ・同綴異義語の検索
